@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useLanguage } from './contexts/LanguageContext'
+import { useAccessibility } from './contexts/AccessibilityContext'
+import Header from './components/Header'
+import Hero from './components/Hero'
+import About from './components/About'
+import Features from './components/Features'
+import Pillars from './components/Pillars'
+import Questions from './components/Questions'
+import Contact from './components/Contact'
+import Footer from './components/Footer'
+import AccessibilityPanel from './components/AccessibilityPanel'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { language, changeLanguage, availableLanguages } = useLanguage()
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+
+      <AccessibilityPanel />
+
+      <main>
+        <Hero />
+        <About />
+        <Features />
+        <Pillars />
+        <Questions />
+        <Contact />
+      </main>
+
+      <Footer />
+
+      {availableLanguages.length > 1 && (
+        <div className="fixed bottom-4 right-4 z-50 flex gap-2">
+          {availableLanguages.map(lang => (
+            <button
+              key={lang}
+              onClick={() => changeLanguage(lang)}
+              className={`w-8 h-8 rounded-full text-xs font-medium transition-all ${language === lang
+                  ? 'bg-primary-600 text-white'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                }`}
+              aria-label={`Switch to ${lang} language`}
+            >
+              {lang.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      )}
     </>
   )
 }
